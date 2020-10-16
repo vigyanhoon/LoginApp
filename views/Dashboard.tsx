@@ -8,20 +8,19 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../reducers/rootReducer';
+import { getUsers } from '../reducers/usersSlice';
 
 const windowWidth = Dimensions.get('window').width;
 
 const Dashboard = () => {
-  const [data, setData] = useState([])
+  const { allUsers } = useSelector((state: RootState) => state.users)
   const [currentTab, setCurrentTab] = useState(0)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    fetch('https://api.github.com/search/users?q=vigyan')
-      .then((response) => response.json())
-      .then((json) => setData(json.items))
-      .catch((error) => console.error(error))
-    SplashScreen.hide()
+      dispatch(getUsers('vigyan'))
   }, [])
 
   const getItem = (data, index) => {
@@ -52,7 +51,7 @@ const Dashboard = () => {
     );
   }
 
-  const Tab1 = <VirtualizedList data={data} initialNumToRender={4}
+  const Tab1 = <VirtualizedList data={allUsers} initialNumToRender={4}
     renderItem={({ item }) => <Item key={item.id} node={item.node} title={item.title} score={item.score} avatar={item.avatar} />}
     keyExtractor={item => item.id}
     getItemCount={getItemCount}
