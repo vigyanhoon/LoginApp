@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,18 +6,17 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+
 import { isValidEmail, isValidPassword } from '../common/Utility';
 
 const Login = ({navigation})=> {
 
   const [email, setEmail] = useState('')
-  const [validEmail, setValidEmail] = useState(true)
+  const [validEmail, setValidEmail] = useState(false)
   const [password, setPassword] = useState('')
-  const [validPassword, setValidPassword] = useState(true)
+  const [validPassword, setValidPassword] = useState(false)
 
   useEffect(() => {
-    SplashScreen.hide()
     if (validEmail && validPassword) {  //can be checked here if user has valid session
       navigation.navigate('Dashboard')
       setEmail('')

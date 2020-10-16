@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,15 +6,12 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+
 import { isValidEmail } from '../common/Utility';
 
 const ForgotPassword = ({ navigation, route: { params: { email } } }) => {
   const [enteredEmail, setEmail] = useState(email)
   const [validEmail, setValidEmail] = useState(true)
-  useEffect(() => {
-    SplashScreen.hide()
-  }, [])
   
   const reset = ()=> {
     navigation.goBack()
