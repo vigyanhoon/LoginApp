@@ -7,15 +7,22 @@ import {
   TextInput,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { isValidEmail } from '../common/Utility';
 
-const ForgotPassword = () => {
-  const [email, setEmail] = useState('')
+const ForgotPassword = ({ navigation, route: { params: { email } } }) => {
+  const [enteredEmail, setEmail] = useState(email)
+  const [validEmail, setValidEmail] = useState(true)
   useEffect(() => {
     SplashScreen.hide()
   }, [])
   
   const reset = ()=> {
+    navigation.goBack()
+  }
 
+  const onEmailChange = (email:string)=> {
+    setEmail(email)
+    setValidEmail(isValidEmail(email))
   }
   
   return (
@@ -23,7 +30,8 @@ const ForgotPassword = () => {
       <View style={styles.body}>
         <View style={styles.container}>
           <Text style={styles.head}>Forgot Password</Text>
-          <TextInput placeholder={'Email'} autoCompleteType={'email'} style={[styles.input]} onChangeText={text => setEmail(text)} value={email} />
+          <TextInput placeholder={'Email'} autoCompleteType={'email'} style={[styles.input]} onChangeText={email => onEmailChange(email)} value={enteredEmail} />
+          { !validEmail && <Text style={styles.error}>Please enter valid email</Text> }
           <TouchableOpacity onPress={reset} style={styles.button}>
             <Text style={styles.buttonText}> Reset </Text>
           </TouchableOpacity>
@@ -56,6 +64,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     backgroundColor: 'white',
     padding: 10
+  },
+  error: {
+    alignSelf: "flex-start",
+    marginBottom: 20,
+    color: 'red'
   },
   button: {
     width: 200,

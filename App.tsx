@@ -20,9 +20,9 @@ const App: () => React.ReactNode = () => {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-            <Stack.Screen name="Dashboard" component={Dashboard} />
+            <Stack.Screen options={{headerShown: false}} name="Login" component={Login} />
+            <Stack.Screen options={{headerShown: false}} name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen options={{headerLeft: null}} name="Dashboard" component={Dashboard} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

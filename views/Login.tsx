@@ -7,22 +7,31 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { isValidEmail, isValidPassword } from '../common/Utility';
 
 const Login = ({navigation})=> {
 
   const [email, setEmail] = useState('')
+  const [validEmail, setValidEmail] = useState(true)
   const [password, setPassword] = useState('')
+  const [validPassword, setValidPassword] = useState(true)
 
   useEffect(() => {
     SplashScreen.hide()
-  }, [])
+    if (validEmail && validPassword) {  //can be checked here if user has valid session
+      navigation.navigate('Dashboard')
+      setEmail('')
+      setPassword('')
+    }
+  }, [validEmail, validPassword])
 
   const login = () => {
-    navigation.navigate('Dashboard',)
+    setValidEmail(isValidEmail(email))
+    setValidPassword(isValidPassword(password))
   }
 
   const goToForotPassword = () => {
-    console.log('forgot pass')
+    navigation.navigate('ForgotPassword', {email})
   }
 
   return (
@@ -30,8 +39,10 @@ const Login = ({navigation})=> {
       <View style={styles.body}>
         <View style={styles.container}>
           <Text style={styles.head}>Login</Text>
-          <TextInput placeholder={'Email'} autoCompleteType={'email'} style={[styles.input]} onChangeText={text => setEmail(text)} value={email} />
+          <TextInput placeholder={'Email'} autoCompleteType={'email'} style={[styles.input]} onChangeText={(text) => setEmail(text)} value={email} />
+          { !validEmail && <Text style={styles.error}>Please enter valid email</Text> }
           <TextInput placeholder={'Password'} secureTextEntry={true} style={[styles.input]} onChangeText={text => setPassword(text)} value={password} />
+          { !validPassword && <Text style={styles.error}>Please enter password greater than 5</Text> }
           <Text onPress={goToForotPassword} style={styles.forgot}>Forgot password?</Text>
           <TouchableOpacity onPress={login} style={styles.button}>
             <Text style={styles.buttonText}> Login </Text>
@@ -65,6 +76,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     backgroundColor: 'white',
     padding: 10
+  },
+  error: {
+    alignSelf: "flex-start",
+    marginBottom: 20,
+    color: 'red'
   },
   forgot: {
     marginVertical: 10,

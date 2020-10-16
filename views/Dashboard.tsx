@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
@@ -14,10 +15,26 @@ import { getUsers } from '../reducers/usersSlice';
 
 const windowWidth = Dimensions.get('window').width;
 
-const Dashboard = () => {
+const Dashboard = ({navigation}) => {
   const { allUsers } = useSelector((state: RootState) => state.users)
   const [currentTab, setCurrentTab] = useState(0)
   const dispatch = useDispatch()
+
+  const logout = () => {
+    (async () => {
+      navigation.goBack()
+    })()
+  }
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View>
+          <Button color={'red'} onPress={logout} title="Logout" />
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
       dispatch(getUsers('vigyan'))
